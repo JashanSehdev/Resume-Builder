@@ -1,0 +1,58 @@
+
+.root{
+    background-color: rgb(175, 207, 181);
+}
+
+.header {
+    height: 3rem;
+    width: 100%;
+    background-color: rgb(41, 41, 86);
+    display: flex;
+    color: white;
+    align-items: center;
+    justify-content: center;
+    font-size: large;
+}
+
+.main {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 20px;
+}
+
+.image {
+    border-radius: 100%;
+    border: 15px solid white;
+    margin: auto;
+}
+
+.leftSide {
+    background-color: #ebebeb;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.rightSide {
+
+}
+
+.aboutMe {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.contacts {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.skills {
+    
+}
