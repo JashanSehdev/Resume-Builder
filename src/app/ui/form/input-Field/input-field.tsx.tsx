@@ -8,9 +8,12 @@ const FormField: React.FC<FormFieldProps> = ({
   register,
   error,
   valueAsNumber,
+  fullWidth
 }) => (
   <>
     <TextField
+      label={placeholder}
+      fullWidth = {fullWidth}
       error = {!!error}
       helperText={error?.message}
       type={type}

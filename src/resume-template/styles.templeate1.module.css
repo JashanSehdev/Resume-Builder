@@ -1,4 +1,6 @@
 .root {
+  height: 100dvh;
+  overflow: scroll;
 }
 
 
@@ -38,8 +40,15 @@
   text-align: justify;
 }
 
+.aboutMe {
+  width: 80%;
+}
 .aboutMe h1 {
   font-weight: 700;
+}
+.aboutMe p {
+  width: 100%;
+  overflow-wrap: break-word;
 }
 
 .contacts {

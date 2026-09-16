@@ -5,9 +5,9 @@ import { Box } from "@mui/material";
 
 export default function Home() {
   return (
-    <Box classNmae="">
+    <Box className="container">
       <Box>
-
+      
       </Box>
       <Box>
         <TemplateOne/>

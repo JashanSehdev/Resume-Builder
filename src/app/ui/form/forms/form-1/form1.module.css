@@ -1,0 +1,74 @@
+.form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 4rem;
+  height: 100%;
+}
+
+.container {
+  height: 100%;
+}
+
+.inputFields {
+  display: grid;
+  grid-template:
+    "image image firstName firstName  lastName lastName"
+    "image image state state country country"
+    "image image phone phone pinCode pinCode"
+    " email email email jobTitle jobTitle JobTitle"
+    "aboutMe aboutMe aboutMe aboutMe aboutMe aboutMe";
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+}
+
+.uploadImage {
+  grid-area: image;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.firstName {
+  grid-area: firstName;
+}
+
+.lastName {
+  grid-area: lastName;
+}
+.state {
+  grid-area: state;
+}
+
+.country {
+  grid-area: countryCode;
+}
+
+.phone {
+  grid-area: phone;
+}
+
+.email {
+  grid-area: email;
+}
+
+.pinCode {
+  grid-area: pinCode;
+}
+
+.buttons {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  padding: 0 2rem;
+}
+
+.aboutMe {
+  grid-area : aboutMe
+}
+.jobTitle {
+  grid-area: jobTitle;
+}

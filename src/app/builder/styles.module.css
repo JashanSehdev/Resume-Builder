@@ -2,4 +2,20 @@
 .container {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    height: 100dvh;
+   
+}
+
+.formContainer {
+    height: 100%;
+
+}
+.pageContainer{
+    height: 100dvh;
+    overflow: scroll;
+    scrollbar-width: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }

@@ -26,7 +26,7 @@ const InputForm = () => {
   return (
     <Box>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Box className ={styles.formContainer}>
+        <Box className={styles.formContainer}>
           <Box className={styles.uploadImage}>
             <Box
               component={"img"}
@@ -41,7 +41,7 @@ const InputForm = () => {
             </Fab>
           </Box>
 
-          <Box className ={styles.inputFields}>
+          <Box className={styles.inputFields}>
             <Box className={styles.upper}>
               <FormField
                 type="text"
@@ -63,10 +63,10 @@ const InputForm = () => {
             <Box>
               <FormField
                 type="text"
-                placeholder="city"
-                name="city"
+                placeholder="state"
+                name="state"
                 register={register}
-                error={errors.city}
+                error={errors.state}
               />
             </Box>
 

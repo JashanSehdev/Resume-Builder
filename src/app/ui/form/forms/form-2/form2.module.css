@@ -1,0 +1,57 @@
+.form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap : 4rem;
+    width: 100%;
+}
+
+.Buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 3rem;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.inputFields {
+    display: grid;
+    grid-template: 
+    'schoolName schoolName'
+    'startingYear endingYear'
+    'degree fieldOfStudy'
+    'null delete';
+    gap:1rem
+}
+
+.schoolName {
+    grid-area : schoolName
+}
+.startingYear {
+    grid-area : startingYear
+}
+
+.endingYear {
+    grid-area : endingYear
+}
+.degree {
+    grid-area: degree;
+}
+
+.fieldOfStudy {
+    grid-area: fieldOfStudy;
+}
+
+.delete {
+    grid-area: delete;
+}
+.null {
+    grid-area: null
+}

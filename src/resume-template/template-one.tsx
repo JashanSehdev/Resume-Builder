@@ -1,17 +1,15 @@
-import {
-  Box,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Typography,
-} from "@mui/material";
+"use client";
+
+import { Box, List, ListItem, ListItemIcon, ListItemText, Typography } from "@mui/material";
 import styles from "./styles.templeate1.module.css";
 import EmailIcon from "@mui/icons-material/Email";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import { useAppSelector } from "@/app/hooks";
 
 export default function TemplateOne() {
+  const {personalData, educationData, experienceData} = useAppSelector((state) => state.resume);
+  console.log("from ",experienceData)
   return (
     <Box className={styles.root}>
       <Box className={styles.main}>
@@ -19,22 +17,21 @@ export default function TemplateOne() {
           <Box
             className={styles.image}
             component={"img"}
-            src={
-              "https://imgs.search.brave.com/vqIkHge6RRAuSktdkwSsEDqohaMerRA_32eBtYxgsLs/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9pbWcu/bWFnbmlmaWMuY29t/L3ByZW1pdW0tcGhv/dG8vMjQteWVhci1v/bGQtb2ZmaWNlLWdp/cmwtd2l0aC1icmln/aHRfMTI2MDg4Mi0x/NzkwNS5qcGc_c2Vt/dD1haXNfaHlicmlk/Jnc9NzQwJnE9ODA"
-            }
+            src={personalData?.photo || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT989RCRb-o4ArcYugXvZURhTpON0q2b-iHFdzjt1SvOg&s=10'}
           />
 
           <Box className={styles.aboutMe}>
             <Typography variant="h5" component={"h1"}>
               About me
             </Typography>
-            <Typography variant="body2">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laborum
-              fugiat delectus eius officiis dolorem illum aliquam eos eligendi,
-              velit natus possimus voluptatum adipisci, autem laudantium
-              asperiores, deleniti alias! Dicta molestias aliquam quaerat,
-              exercitationem similique deleniti optio atque assumenda debitis
-              natus?
+            <Typography variant="body2" component={'p'}>
+
+              {
+                personalData?.aboutMe ? personalData.aboutMe : `Lorem ipsum dolor sit amet consectetur, adipisicing elit. Laborum fugiat delectus eius
+              officiis dolorem illum aliquam eos eligendi, velit natus possimus voluptatum adipisci,`
+              }
+              
+
             </Typography>
           </Box>
           <Box className={styles.contacts}>
@@ -46,19 +43,19 @@ export default function TemplateOne() {
                 <ListItemIcon>
                   <LocalPhoneIcon />
                 </ListItemIcon>
-                <ListItemText primary={"98754654654"} />
+                <ListItemText primary={personalData?.phone} />
               </ListItem>
               <ListItem>
                 <ListItemIcon>
                   <EmailIcon />
                 </ListItemIcon>
-                <ListItemText primary={"jashan@gmail.com"} />
+                <ListItemText primary={personalData?.email} />
               </ListItem>
               <ListItem>
                 <ListItemIcon>
                   <LocationOnIcon />
                 </ListItemIcon>
-                <ListItemText primary={"Ludhiana, punjab"} />
+                <ListItemText primary={`${personalData?.state ?? 'Punjab'}, ${personalData?.country ?? 'India'}` ?? 'Location'} />
               </ListItem>
             </List>
           </Box>
@@ -103,48 +100,45 @@ export default function TemplateOne() {
         </Box>
         <Box className={styles.right}>
           <Box className={styles.title}>
-            <p className={styles.name}>John</p>
-            <p className={styles.name}>Doe</p>
-            <p className={styles.jobTitle}>Software Engineer</p>
+            <p className={styles.name}>{personalData?.firstName}</p>
+            <p className={styles.name}>{personalData?.lastName}</p>
+            <p className={styles.jobTitle}>{personalData?.jobTitle}</p>
           </Box>
-          
-          <Box className ={styles.educationContainer}>
-            <Typography variant="h5" component={'h1'}>
-                Education
-            </Typography>
-            <Box className={styles.education}>
-                <p className={styles.e_year}>{"(2023 - 2027)"}</p>
-                <p className={styles.e_name}>Chitkara University</p>
-                <p className={styles.e_body}>{"Bacholer of Engineering"}</p>
-                <p className={styles.e_body}>9.64</p>
-            </Box>
 
-            <Box className={styles.education}>
-                <p className={styles.e_year}>{"(2023 - 2027)"}</p>
-                <p className={styles.e_name}>Chitkara University</p>
-                <p className={styles.e_body}>{"Bacholer of Engineering"}</p>
-                <p className={styles.e_body}>9.64</p>
+          <Box className={styles.educationContainer}>
+            <Typography variant="h5" component={"h1"}>
+              Education
+            </Typography>
+            { 
+              Array.isArray(educationData?.test) ?
+              educationData?.test.map((item, index) =>(
+              <Box className={styles.education} key={index} >
+              <p className={styles.e_year}>{`(${item.startingYear} - ${item.endingYear})`}</p>
+              <p className={styles.e_name}>{item.schoolName}</p>
+              <p className={styles.e_body}>{item.degree}</p>
+              <p className={styles.e_body}>{item.fieldOfStudy}</p>
             </Box>
+              )) : <Box></Box>
+            }
           </Box>
 
           <Box className={styles.experience}>
-            <Typography variant="h5">
-                Experience
-            </Typography>
-             <Box className={styles.education}>
-                <p className={styles.e_year}>{"(2023 - 2027)"}</p>
-                <p className={styles.e_name}>Zenmonk</p>
-                <p className={styles.e_body}>{"full Stack Inter"}</p>
-                <p className={styles.e_body}>9.64</p>
-            </Box>
-             <Box className={styles.education}>
-                <p className={styles.e_year}>{"(2023 - 2027)"}</p>
-                <p className={styles.e_name}>Zenmonk</p>
-                <p className={styles.e_body}>{"full Stack Inter"}</p>
-                <p className={styles.e_body}>9.64</p>
-            </Box>
-            
+            <Typography variant="h5">Experience</Typography>
 
+            { 
+              Array.isArray(experienceData?.test) ?
+              experienceData?.test.map((item, index) =>(
+              <Box className={styles.education} key={index}>
+              <p className={styles.e_year}>{`(${item.startingYear} - ${item.endingYear})`}</p>
+              <p className={styles.e_name}>{item.companyName}</p>
+              <p className={styles.e_body}>{item.role}</p>
+            </Box>
+              )) : <Box></Box>
+            }
+
+        
+            
+            
           </Box>
         </Box>
       </Box>
