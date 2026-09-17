@@ -12,7 +12,6 @@ import styles from "./styles.templeate1.module.css";
 import EmailIcon from "@mui/icons-material/Email";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { useAppSelector } from "@/app/hooks";
 import { Resume } from "@/types/resume";
 import StarBorderPurple500Icon from "@mui/icons-material/StarBorderPurple500";
 import { useEffect, useState } from "react";
@@ -21,26 +20,24 @@ import { myEmitter } from "@/lib/emitter";
 export default function TemplateOne({ resume }: { resume: Resume }) {
   console.log(resume)
   const { personal_details, education, skills } = resume;
-  console.log("skills 00 ", skills);
-
   const [experience, setExperience] = useState();
   useEffect(() => {
-    // Define the listener
+
     const handleEvent = (data) => {
       setExperience(data.experience)
     };
 
-    // Subscribe to the event
+
     myEmitter.on('sendEvent', handleEvent);
 
-    // Cleanup: remove listener when component unmounts
+
     return () => {
       myEmitter.off('customEvent', handleEvent);
     };
   }, []);
 
   return (
-    <Box className={styles.root}>
+    <Box className={styles.root} id="printable_div">
       <Box className={styles.main}>
         <Box className={styles.leftSide}>
           <Box

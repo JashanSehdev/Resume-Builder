@@ -87,7 +87,7 @@ export default function Form1({
                 height={200}
                 width={200}
               />
-              {/* <CloudinaryUploader setValue={setValue} /> */}
+              <CloudinaryUploader setValue={setValue} />
             </Box>
             <Box className={styles.firstName}>
               <FormField

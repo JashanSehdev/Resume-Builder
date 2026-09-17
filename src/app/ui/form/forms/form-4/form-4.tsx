@@ -98,7 +98,7 @@ export default function Form4({pageControl, setResume} : Prop) {
 
         <Box className={styles.Buttons}>
           <Fab variant="extended" onClick={() => pageControl((prev) => prev - 1)}>Prev</Fab>
-          <Fab variant="extended" type="submit">Next</Fab>
+          <Fab variant="extended" onClick={() => window.print()} type="submit">Print</Fab>
         </Box>
       </form>
     </Box>

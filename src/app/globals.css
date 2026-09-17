@@ -31,3 +31,23 @@ body {
   padding : 0;
   box-sizing: border-box
 }
+
+@media print {
+  /* Hide everything on the page */
+  body {
+    visibility: hidden;
+  }
+  
+  /* Make only your specific div visible */
+  #printable_div{
+    visibility: visible;
+  }
+  
+  /* Position the div at the top-left of the printed page */
+  #printable_div {
+    overflow: hidden;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+}
