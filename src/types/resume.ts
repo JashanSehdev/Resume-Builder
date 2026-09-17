@@ -32,7 +32,7 @@ const IndividualEducationSchema = z.object({
 }) 
 
 export const  EducationSchema = z.object({
-    test : z.array(IndividualEducationSchema).min(1, {message :"message at least one entry required"})
+    education : z.array(IndividualEducationSchema).min(1, {message :"message at least one entry required"})
 }) 
 
 export type educationForm = z.infer<typeof EducationSchema>;
@@ -50,7 +50,78 @@ const IndividualExperienceSchema = z.object({
 }) 
 
 export const  ExperienceSchema = z.object({
-    test : z.array(IndividualExperienceSchema).min(1, {message :"message at least one entry required"})
+    experience : z.array(IndividualExperienceSchema).min(1, {message :"message at least one entry required"})
 }) 
 
 export type experienceForm = z.infer<typeof ExperienceSchema>;
+
+
+export type Resume = {
+    personal_details : Personal_Detail,
+    summary : string,
+    languages : string[],
+    education : Education[],
+    certificates : string[],
+    skills : Skills[],
+    experience : Experience[]
+
+}
+
+type Skills = {
+    skill :string
+}
+export type Personal_Detail = {
+    firstName : string
+    lastName : string,
+    email : string,
+    phone : string,
+    state : string,
+    country : string,
+    address : string,
+    linkedIn ?: string,
+    github ?: string,
+    photo ?: string,
+    jobTitle : string,
+    aboutMe : string
+}       
+
+export type Education = {
+    schoolName : string,
+    startingYear : number,
+    endingYear : number | string,
+    degree : string,
+    fieldOfStudy: string
+}
+
+export type Experience =  {
+    companyName : string,
+    role : string,
+    startingYear : number ,
+    endingYear: number | string,
+    about : string
+
+}
+
+
+export const defaultValueResume : Resume = {
+    personal_details : {
+        firstName : "",
+        lastName : "",
+        email : "",
+        state : "",
+        country : "",
+        jobTitle : "",
+        aboutMe : "",
+        phone : "",
+        address : "",
+        linkedIn : "",
+        github : "",
+        photo : "",
+    },
+    summary : "",
+    languages : [],
+    education : [],
+    certificates : [],
+    skills : [],
+    experience : []
+}

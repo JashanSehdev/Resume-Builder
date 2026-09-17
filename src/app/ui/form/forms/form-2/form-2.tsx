@@ -3,24 +3,28 @@
 import { Box, Button, Fab, Typography } from "@mui/material";
 import styles from "./form2.module.css";
 // import { FormType2, EducationSchema } from "@/app/ui/form/forms/form-2/form2.types";
-import { EducationSchema, educationForm } from "@/types/resume";
+import { EducationSchema, Resume, educationForm } from "@/types/resume";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import FormField from "../../input-Field/input-field.tsx";
 import { useAppDispatch } from "@/app/hooks";
 import { setEducationData } from "@/features/resume/resume.slice";
-import { Education } from "@/types/user-details";
+import { Dispatch, SetStateAction, useEffect } from "react";
 
 const dummyObject = {
-  schoolName : '',
-  startingYear : '',
-  endingYear : "",
-  fieldOfStudy : "",
-  degree : ""
-}
+  schoolName: "",
+  startingYear: "",
+  endingYear: "",
+  fieldOfStudy: "",
+  degree: "",
+};
 
-export default function Form2({pageControl}) {
+type Props = {
+  pageControl: Dispatch<SetStateAction<number>>;
+  setResume: Dispatch<SetStateAction<Resume>>;
+};
 
+export default function Form2({ pageControl, setResume }: Props) {
   const dispatch = useAppDispatch();
 
   const {
@@ -29,10 +33,11 @@ export default function Form2({pageControl}) {
     control,
     formState: { errors },
     setError,
+    watch,
   } = useForm<educationForm>({
     resolver: zodResolver(EducationSchema),
-    mode : 'onChange'
-  })
+    mode: "onChange",
+  });
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -41,11 +46,27 @@ export default function Form2({pageControl}) {
       minLength: 4,
     },
   });
-  const onSubmit: SubmitHandler<educationForm> = async (data: educationForm) => {
+  const onSubmit: SubmitHandler<educationForm> = async (
+    data: educationForm,
+  ) => {
     console.log("SUCCESS", data);
-    dispatch(setEducationData(data))
-    pageControl((prev) => prev + 1)
+    dispatch(setEducationData(data));
+    pageControl((prev) => prev + 1);
   };
+
+  useEffect(() => {
+    const subscription = watch((value) => {
+      if (!value.education) return;
+
+      setResume((prev) => ({
+        ...prev,
+        education: value.education as Resume["education"],
+      }));
+    });
+
+    return () => subscription.unsubscribe();
+  }, [watch, setResume]);
+
   return (
     <Box className={styles.container}>
       <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
@@ -54,14 +75,14 @@ export default function Form2({pageControl}) {
         {fields.map((item, index) => {
           return (
             <Box key={item.id} className={styles.inputFields}>
-              <Box className = {styles.schoolName}>
+              <Box className={styles.schoolName}>
                 <FormField
-                fullWidth = {true}
+                  fullWidth={true}
                   type="text"
                   placeholder="School Name"
-                  name={`test.${index}.schoolName`}
+                  name={`education.${index}.schoolName`}
                   register={register}
-                  error={errors?.test?.[index]?.schoolName}
+                  error={errors?.education?.[index]?.schoolName}
                 />
               </Box>
 
@@ -69,57 +90,68 @@ export default function Form2({pageControl}) {
                 <FormField
                   type="text"
                   placeholder="starting year"
-                  name={`test.${index}.startingYear`}
+                  name={`education.${index}.startingYear`}
                   register={register}
-                  error={errors?.test?.[index]?.startingYear}
+                  error={errors?.education?.[index]?.startingYear}
                 />
               </Box>
               <Box className={styles.endingYear}>
                 <FormField
                   type="text"
                   placeholder="Ending year"
-                  name={`test.${index}.endingYear`}
+                  name={`education.${index}.endingYear`}
                   register={register}
-                  error={errors?.test?.[index]?.endingYear}
+                  error={errors?.education?.[index]?.endingYear}
                 />
               </Box>
               <Box className={styles.degree}>
                 <FormField
                   type="text"
                   placeholder="Degree"
-                  name={`test.${index}.degree`}
+                  name={`education.${index}.degree`}
                   register={register}
-                  error={errors?.test?.[index]?.degree}
+                  error={errors?.education?.[index]?.degree}
                 />
-                
               </Box>
               <Box className={styles.fieldOfStudy}>
                 <FormField
                   type="text"
                   placeholder="Field Of Study"
-                  name={`test.${index}.fieldOfStudy`}
+                  name={`education.${index}.fieldOfStudy`}
                   register={register}
-                  error={errors?.test?.[index]?.fieldOfStudy}
+                  error={errors?.education?.[index]?.fieldOfStudy}
                 />
               </Box>
               <p className={styles.null}></p>
-              {
-                index !== 0 && <Button type="button"
-                className={styles.Delete}
-                    onClick={() => {remove(index)}}    
-                >Delete</Button>
-              }
+              {index !== 0 && (
+                <Button
+                  type="button"
+                  className={styles.Delete}
+                  onClick={() => {
+                    remove(index);
+                  }}
+                >
+                  Delete
+                </Button>
+              )}
             </Box>
           );
         })}
-     
-        <Button type="button"
-            onClick={() => append(dummyObject)}
-        >Append</Button>
+
+        <Button type="button" onClick={() => append(dummyObject)}>
+          Append
+        </Button>
 
         <Box className={styles.Buttons}>
-          <Fab variant="extended" onClick={() =>pageControl((prev) => prev - 1)}>Prev</Fab>
-          <Fab variant="extended" type="submit">Next</Fab>
+          <Fab
+            variant="extended"
+            onClick={() => pageControl((prev) => prev - 1)}
+          >
+            Prev
+          </Fab>
+          <Fab variant="extended" type="submit">
+            Next
+          </Fab>
         </Box>
       </form>
     </Box>

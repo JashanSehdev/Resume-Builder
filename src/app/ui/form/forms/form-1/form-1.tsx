@@ -4,20 +4,27 @@ import { Box, Fab, TextField, Typography } from "@mui/material";
 import { SubmitHandler, useForm, useWatch } from "react-hook-form";
 import FormField from "../../input-Field/input-field.tsx";
 import { zodResolver } from "@hookform/resolvers/zod";
-import styles from "./form1.module.css";import { setPersonalData, test } from "@/features/resume/resume.slice";
+import styles from "./form1.module.css";
+import { setPersonalData } from "@/features/resume/resume.slice";
 import { useDispatch } from "react-redux";
-import { PersonalDetails, PersonalDetailSchema } from "@/types/resume.ts";
-import CloudinaryUploader from './upload-widget.tsx'
+import {
+  PersonalDetails,
+  PersonalDetailSchema,
+  Resume,
+} from "@/types/resume.ts";
+import CloudinaryUploader from "./upload-widget.tsx";
 import { useAppSelector } from "@/app/hooks.ts";
+import { SetStateAction, Dispatch, useEffect } from "react";
 
-
-
-
-export default function Form1({pageControl} ) {
-  const photo = useAppSelector((state) => state.resume.personalData?.photo)
+export default function Form1({
+  pageControl,
+  setResume,
+}: {
+  pageControl: Dispatch<SetStateAction<number>>;
+  setResume: Dispatch<SetStateAction<Resume>>;
+}) {
+  const photo = useAppSelector((state) => state.resume.personalData?.photo);
   const dispatch = useDispatch();
-
-
 
   const {
     register,
@@ -28,14 +35,37 @@ export default function Form1({pageControl} ) {
     setError,
   } = useForm<PersonalDetails>({
     resolver: zodResolver(PersonalDetailSchema),
+    mode: 'onChange'
   });
-  console.log("watching Photo: ",watch("photo"))
+  console.log("watching Photo: ", watch("photo"));
 
-  const onSubmit: SubmitHandler<PersonalDetails> = async (data: PersonalDetails) => {
+  const onSubmit: SubmitHandler<PersonalDetails> = async (
+    data: PersonalDetails,
+  ) => {
     dispatch(setPersonalData(data));
     console.log("SUCCESS", data);
-    pageControl((prev) => prev + 1)
+    pageControl((prev) => prev + 1);
   };
+
+  useEffect(() => {
+    // 1. Pass a callback function to watch() to subscribe to changes cleanly
+    const subscription = watch((value, { name, type }) => {
+      // Opt-in to specific fields to minimize state updates
+
+      setResume((prev) => ({
+        ...prev,
+        personal_details: {
+          ...prev.personal_details,
+          [name]: value[name],
+        },
+      }));
+    });
+
+    // 2. Unsubscribe when the component unmounts to prevent memory leaks
+    return () => subscription.unsubscribe();
+  }, [watch]);
+
+  console.log(watch());
 
   return (
     <Box className={styles.container}>
@@ -47,15 +77,17 @@ export default function Form1({pageControl} ) {
             <Box className={styles.uploadImage}>
               <input type="text" {...register("photo")} hidden />
               <Box
-                sx={{objectFit: 'cover'}}
+                sx={{ objectFit: "cover" }}
                 component={"img"}
-                src={ photo === "" ? 
-                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXTMlUueMhaERNUMQGPftBgPnFK3C6u1-By5TcC7Jo7g&s=10" : photo
+                src={
+                  photo === ""
+                    ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXTMlUueMhaERNUMQGPftBgPnFK3C6u1-By5TcC7Jo7g&s=10"
+                    : photo
                 }
                 height={200}
                 width={200}
               />
-              <CloudinaryUploader setValue={setValue} />
+              {/* <CloudinaryUploader setValue={setValue} /> */}
             </Box>
             <Box className={styles.firstName}>
               <FormField
@@ -128,7 +160,7 @@ export default function Form1({pageControl} ) {
 
             <Box className={styles.jobTitle}>
               <FormField
-              fullWidth ={true}
+                fullWidth={true}
                 type="text"
                 placeholder="Job Title"
                 name="jobTitle"
@@ -138,14 +170,14 @@ export default function Form1({pageControl} ) {
             </Box>
 
             <Box className={styles.aboutMe}>
-              <TextField 
-                id="outlined-multiline-flexible" 
-                label="About Me" 
+              <TextField
+                id="outlined-multiline-flexible"
+                label="About Me"
                 placeholder="Describe Yourself"
-                multiline 
-                rows = {4} 
-                error = {!!errors.aboutMe}
-                helperText = {errors.aboutMe?.message}
+                multiline
+                rows={4}
+                error={!!errors.aboutMe}
+                helperText={errors.aboutMe?.message}
                 {...register("aboutMe")}
                 fullWidth
               />
